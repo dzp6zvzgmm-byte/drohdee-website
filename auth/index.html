@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Abrir DrohDee</title>
+  <meta name="description" content="Abre DrohDee para terminar.">
+  <meta name="robots" content="noindex">
+  <!-- The link's keys never go to another site. -->
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#0E1424">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <a class="wordmark" href="/" aria-label="DrohDee">Droh<span>Dee</span></a>
+    </header>
+    <main>
+      <section class="hero">
+        <h1 id="title">Abriendo DrohDee…</h1>
+        <p id="text">Si DrohDee está instalado en este iPhone o iPad, se abre solo para terminar.</p>
+        <a class="button" id="open" href="com.drohdee.app://login-callback">Abrir DrohDee</a>
+        <p>Si no se abre, instala DrohDee desde <a href="https://apps.apple.com/app/testflight/id899247664">TestFlight</a> con la invitación que recibiste, y vuelve a tocar el enlace del correo.</p>
+        <p lang="en"><small>Opening DrohDee. If it doesn't open, install DrohDee from TestFlight and tap the email's link again.</small></p>
+      </section>
+    </main>
+    <footer class="site"><span>© 2026 DrohDee</span><span><a href="mailto:soporte@drohdee.com">soporte@drohdee.com</a></span></footer>
+  </div>
+  <script>
+    // An email link (confirm, new password, invitation) that landed on the
+    // website instead of the app: open the app with the same keys. They are
+    // read once and taken off the address bar; nothing is sent anywhere.
+    (function () {
+      var search = location.search, hash = location.hash;
+      var frag = new URLSearchParams(hash.replace(/^#/, ''));
+      var query = new URLSearchParams(search);
+      var app = 'com.drohdee.app://login-callback' + search + hash;
+      var hasKeys = frag.has('access_token') || query.has('code');
+      var error = frag.get('error_description') || query.get('error_description');
+      if (search || hash) history.replaceState(null, '', location.pathname);
+      document.getElementById('open').href = app;
+      if (error) {
+        document.getElementById('title').textContent = 'Este enlace ya no sirve';
+        document.getElementById('text').textContent =
+          'Venció o ya se usó. Pide uno nuevo desde DrohDee (por ejemplo, «¿Olvidaste tu contraseña?»).';
+      } else if (hasKeys) {
+        location.href = app;
+      } else {
+        document.getElementById('title').textContent = 'Abrir DrohDee';
+      }
+    })();
+  </script>
+</body>
+</html>
